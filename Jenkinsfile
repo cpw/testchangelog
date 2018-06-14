@@ -24,38 +24,39 @@ pipeline {
     post {
         always {
             script {
-                changelog = []
-
-                def addChanges(build) {
-                    for (change in build.getChangeSets)
-                    {
-                        if (!change.getMsg().contains("\n"))
-                        {
-                            changelog += "\t" + change.getMsg()
-                        }
-                        else
-                        {
-                            for (pt in change.getMsg().split('\n'))
-                                changelog += "\t" + pt
-                            changelog += "";
-                        }
-                    }
-                    next = build.getPreviousBuild()
-                    if (next != null)
-                    {
-                        if (next.result == 'SUCCESS')
-                        {
-                            changelog += ""
-                            changelog += "Build: " + next.number
-                        }
-                        addChanges(next)
-                    }
-                }
+                def changelog = []
                 changelog += "Build: " + currentBuild.number
                 addChanges(currentBuild)
                 def changelogString = '\n'.join(changelog)
-                writeFile file: "build/changelog.html", text: "${changelogString}"
+                writeFile file: "build/changelog.txt", text: "${changelogString}"
             }
         }
     }
 }
+
+def addChanges(build) {
+    for (change in build.getChangeSets)
+    {
+        if (!change.getMsg().contains("\n"))
+        {
+            changelog += "\t" + change.getMsg()
+        }
+        else
+        {
+            for (pt in change.getMsg().split('\n'))
+                changelog += "\t" + pt
+            changelog += "";
+        }
+    }
+    next = build.getPreviousBuild()
+    if (next != null)
+    {
+        if (next.result == 'SUCCESS')
+        {
+            changelog += ""
+            changelog += "Build: " + next.number
+        }
+        addChanges(next)
+    }
+}
+
