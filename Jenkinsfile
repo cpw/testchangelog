@@ -40,18 +40,15 @@ def addChanges(build, changelog) {
     {
         for (chg in change?.items)
         {
-            for (entry in chg?.entries)
+            if (!chg?.msg?.contains("\n"))
             {
-                if (!entry?.msg?.contains("\n"))
-                {
-                    changelog += "\t" + change?.msg
-                }
-                else
-                {
-                    for (pt in entry?.msg?.split('\n'))
-                        changelog += "\t" + pt
-                    changelog += "";
-                }
+                changelog += "\t" + chg?.msg
+            }
+            else
+            {
+                for (pt in chg?.msg?.split('\n'))
+                    changelog += "\t" + pt
+                changelog += "";
             }
         }
     }
