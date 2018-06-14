@@ -61,7 +61,7 @@ def addChanges(build, changelog) {
             changelog += ""
             changelog += "Build: " + next.number
         }
-        addChanges(next, changelog)
+        changelog = addChanges(next, changelog)
     }
     print(changelog)
     return changelog
