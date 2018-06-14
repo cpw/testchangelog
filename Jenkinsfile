@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh './gradlew ${GRADLE_ARGS} --refresh-dependencies --continue build'
                 script {
-                    env.MYVERSION="1.2.4"
+                    env.MYVERSION="1.3.0"
                 }
             }
         }        
@@ -28,7 +28,7 @@ pipeline {
         always {
             script {
                 def changelog = []
-                changelog += "Build: " + currentBuild.number
+                changelog += "Build: ${currentBuild.number} - ${env.MYVERSION}"
                 changelog = addChanges(currentBuild, changelog)
                 writeFile file: "changelog.txt", text: changelog.join("\n")
             }
@@ -44,11 +44,11 @@ def addChanges(build, changelog) {
         {
             if (!chg?.msg?.contains("\n"))
             {
-                changelog += "\t${build.buildVariables.MYVERSION?:"NOVERSION"} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}: ${chg.msg}"
+                changelog += "\t${chg.author.toString()} @ ${new Date(chg.timestamp)}: ${chg.msg}"
             }
             else
             {
-                changelog += "\t${build.buildVariables.MYVERSION?:"NOVERSION"} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}:"
+                changelog += "\t${chg.author.toString()} @ ${new Date(chg.timestamp)}:"
                 for (pt in chg?.msg?.split('\n'))
                     changelog += "\t\t" + pt
                 changelog += "";
@@ -61,7 +61,7 @@ def addChanges(build, changelog) {
         if (next.result == 'SUCCESS')
         {
             changelog += ""
-            changelog += "Build: " + next.number
+            changelog += "Build: ${next.number} - ${next.buildVariables.MYVERSION?:"NONE"}"
         }
         changelog = addChanges(next, changelog)
     }
