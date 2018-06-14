@@ -27,6 +27,8 @@ pipeline {
                 def changelog = []
                 changelog += "Build: " + currentBuild.number
                 changelog = addChanges(currentBuild, changelog)
+                print(changelog)
+                print(changelog.join("\n"))
                 writeFile file: "changelog.txt", text: changelog.join("\n")
             }
             archiveArtifacts artifacts: 'changelog.txt', fingerprint: false
@@ -42,7 +44,6 @@ def addChanges(build, changelog) {
             if (!chg?.msg?.contains("\n"))
             {
                 changelog += "\t" + chg?.msg
-                print(changelog)
             }
             else
             {
