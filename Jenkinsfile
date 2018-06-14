@@ -19,7 +19,7 @@ pipeline {
             steps {
                 sh './gradlew ${GRADLE_ARGS} --refresh-dependencies --continue build'
                 script {
-                    env.MYVERSION="1.3.1"
+                    env.MYVERSION="1.3.4"
                 }
             }
         }        
@@ -61,7 +61,7 @@ def addChanges(build, changelog) {
         if (next.result == 'SUCCESS')
         {
             changelog += ""
-            changelog += "Build: ${next.number} - ${next.buildVariables.MYVERSION} - ${new Date(next.startTimeInMillis)}"
+            changelog += "Build: ${next.number} - ${next.buildVariables.MYVERSION:"NOVERSION"} - ${new Date(next.startTimeInMillis)}"
         }
         changelog = addChanges(next, changelog)
     }
