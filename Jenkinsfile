@@ -35,7 +35,7 @@ pipeline {
                         }
                         else
                         {
-                            for (pt : change.getMsg().split('\n'))
+                            for (pt in change.getMsg().split('\n'))
                                 changelog += "\t" + pt
                             changelog += "";
                         }
