@@ -27,8 +27,6 @@ pipeline {
                 def changelog = []
                 changelog += "Build: " + currentBuild.number
                 changelog = addChanges(currentBuild, changelog)
-                print(changelog)
-                print(changelog.join("\n"))
                 writeFile file: "changelog.txt", text: changelog.join("\n")
             }
             archiveArtifacts artifacts: 'changelog.txt', fingerprint: false
@@ -43,11 +41,11 @@ def addChanges(build, changelog) {
         {
             if (!chg?.msg?.contains("\n"))
             {
-                changelog += "\t${chg.commitId} by ${chg.author} @ ${new Date(entry.timestamp)}: ${entry.msg}"
+                changelog += "\t${chg.commitId} by ${chg.author} @ ${new Date(chg.timestamp)}: ${chg.msg}"
             }
             else
             {
-                changelog += "\t${chg.commitId} by ${chg.author} @ ${new Date(entry.timestamp)}:"
+                changelog += "\t${chg.commitId} by ${chg.author} @ ${new Date(chg.timestamp)}:"
                 for (pt in chg?.msg?.split('\n'))
                     changelog += "\t\t" + pt
                 changelog += "";
@@ -64,7 +62,6 @@ def addChanges(build, changelog) {
         }
         changelog = addChanges(next, changelog)
     }
-    print(changelog)
     return changelog
 }
 
