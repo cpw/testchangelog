@@ -41,11 +41,11 @@ def addChanges(build, changelog) {
         {
             if (!chg?.msg?.contains("\n"))
             {
-                changelog += "\t${chg.commitId} by ${chg.author} @ ${new Date(chg.timestamp)}: ${chg.msg}"
+                changelog += "\t${chg.commitId} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}: ${chg.msg}"
             }
             else
             {
-                changelog += "\t${chg.commitId} by ${chg.author} @ ${new Date(chg.timestamp)}:"
+                changelog += "\t${chg.commitId} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}:"
                 for (pt in chg?.msg?.split('\n'))
                     changelog += "\t\t" + pt
                 changelog += "";
