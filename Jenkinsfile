@@ -18,7 +18,9 @@ pipeline {
         stage('buildandtest') {
             steps {
                 sh './gradlew ${GRADLE_ARGS} --refresh-dependencies --continue build'
-                env.MYVERSION="1.2.3"
+                script {
+                    env.MYVERSION="1.2.3"
+                }
             }
         }        
     }
