@@ -37,17 +37,17 @@ pipeline {
 def addChanges(build) {
     for (change in build.changeSets)
     {
-        for (chg in chg.items)
+        for (chg in chg?.items)
         {
-            for (entry in chg.entries)
+            for (entry in chg?.entries)
             {
-                if (!entry.msg.contains("\n"))
+                if (!entry?.msg?.contains("\n"))
                 {
-                    changelog += "\t" + change.msg
+                    changelog += "\t" + change?.msg
                 }
                 else
                 {
-                    for (pt in change.msg.split('\n'))
+                    for (pt in entry?.msg?.split('\n'))
                         changelog += "\t" + pt
                     changelog += "";
                 }
