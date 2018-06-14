@@ -38,7 +38,7 @@ pipeline {
 def addChanges(build, changelog) {
     for (change in build.changeSets)
     {
-        for (chg in chg?.items)
+        for (chg in change?.items)
         {
             for (entry in chg?.entries)
             {
