@@ -27,7 +27,7 @@ pipeline {
                 def changelog = []
                 changelog += "Build: " + currentBuild.number
                 addChanges(currentBuild)
-                def changelogString = "\n".join(changelog)
+                def changelogString = changelog.join("\n")
                 writeFile file: "build/changelog.txt", text: "${changelogString}"
             }
         }
