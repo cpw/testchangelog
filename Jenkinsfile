@@ -43,6 +43,7 @@ def addChanges(build, changelog) {
             if (!chg?.msg?.contains("\n"))
             {
                 changelog += "\t" + chg?.msg
+                echo changelog
             }
             else
             {
