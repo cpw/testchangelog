@@ -18,6 +18,7 @@ pipeline {
         stage('buildandtest') {
             steps {
                 sh './gradlew ${GRADLE_ARGS} --refresh-dependencies --continue build'
+                env.MYVERSION="1.2.3"
             }
         }        
     }
@@ -41,11 +42,11 @@ def addChanges(build, changelog) {
         {
             if (!chg?.msg?.contains("\n"))
             {
-                changelog += "\t${chg.commitId} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}: ${chg.msg}"
+                changelog += "\t${change.buildVariables.MYVERSION?:"NOVERSION"} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}: ${chg.msg}"
             }
             else
             {
-                changelog += "\t${chg.commitId} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}:"
+                changelog += "\t${change.buildVariables.MYVERSION?:"NOVERSION"} by ${chg.author.toString()} @ ${new Date(chg.timestamp)}:"
                 for (pt in chg?.msg?.split('\n'))
                     changelog += "\t\t" + pt
                 changelog += "";
