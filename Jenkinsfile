@@ -37,18 +37,24 @@ pipeline {
 def addChanges(build) {
     for (change in build.changeSets)
     {
-        if (!change.getMsg().contains("\n"))
+        for (chg in chg.items)
         {
-            changelog += "\t" + change.getMsg()
-        }
-        else
-        {
-            for (pt in change.getMsg().split('\n'))
-                changelog += "\t" + pt
-            changelog += "";
+            for (entry in chg.entries)
+            {
+                if (!entry.msg.contains("\n"))
+                {
+                    changelog += "\t" + change.msg
+                }
+                else
+                {
+                    for (pt in change.msg.split('\n'))
+                        changelog += "\t" + pt
+                    changelog += "";
+                }
+            }
         }
     }
-    next = build.getPreviousBuild()
+    next = build.previousBuild
     if (next != null)
     {
         if (next.result == 'SUCCESS')
