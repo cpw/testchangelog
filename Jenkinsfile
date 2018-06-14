@@ -61,7 +61,7 @@ def addChanges(build, changelog) {
         if (next.result == 'SUCCESS')
         {
             changelog += ""
-            changelog += "Build: ${next.number} - ${next.buildVariables.MYVERSION:"NOVERSION"} - ${new Date(next.startTimeInMillis)}"
+            changelog += "Build: ${next.number} - ${next.buildVariables.MYVERSION?:"NOVERSION"} - ${new Date(next.startTimeInMillis)}"
         }
         changelog = addChanges(next, changelog)
     }
