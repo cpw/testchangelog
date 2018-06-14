@@ -63,6 +63,7 @@ def addChanges(build, changelog) {
         }
         addChanges(next, changelog)
     }
+    print(changelog)
     return changelog
 }
 
