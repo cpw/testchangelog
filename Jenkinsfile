@@ -27,7 +27,7 @@ pipeline {
                 changelog = []
 
                 def addChanges(build) {
-                    for (change : build.getChangeSets)
+                    for (change in build.getChangeSets)
                     {
                         if (!change.getMsg().contains("\n"))
                         {
