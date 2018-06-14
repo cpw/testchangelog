@@ -30,7 +30,7 @@ pipeline {
                 def changelogString = changelog.join("\n")
                 writeFile file: "build/changelog.txt", text: "${changelogString}"
             }
-            archiveArtifacts: artifacts: 'build/*.txt', fingerprint: false
+            archiveArtifacts artifacts: 'build/*.txt', fingerprint: false
         }
     }
 }
