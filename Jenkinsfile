@@ -25,37 +25,6 @@ pipeline {
         always {
             script {
                 def changelog = []
-                def addChanges(build, changelog) {
-                    for (change in build.changeSets)
-                    {
-                        for (chg in chg?.items)
-                        {
-                            for (entry in chg?.entries)
-                            {
-                                if (!entry?.msg?.contains("\n"))
-                                {
-                                    changelog += "\t" + change?.msg
-                                }
-                                else
-                                {
-                                    for (pt in entry?.msg?.split('\n'))
-                                        changelog += "\t" + pt
-                                    changelog += "";
-                                }
-                            }
-                        }
-                    }
-                    next = build.previousBuild
-                    if (next != null)
-                    {
-                        if (next.result == 'SUCCESS')
-                        {
-                            changelog += ""
-                            changelog += "Build: " + next.number
-                        }
-                        addChanges(next)
-                    }
-                }
                 changelog += "Build: " + currentBuild.number
                 addChanges(currentBuild, changelog)
                 def changelogString = changelog.join("\n")
@@ -66,4 +35,35 @@ pipeline {
     }
 }
 
+def addChanges(build, changelog) {
+    for (change in build.changeSets)
+    {
+        for (chg in chg?.items)
+        {
+            for (entry in chg?.entries)
+            {
+                if (!entry?.msg?.contains("\n"))
+                {
+                    changelog += "\t" + change?.msg
+                }
+                else
+                {
+                    for (pt in entry?.msg?.split('\n'))
+                        changelog += "\t" + pt
+                    changelog += "";
+                }
+            }
+        }
+    }
+    next = build.previousBuild
+    if (next != null)
+    {
+        if (next.result == 'SUCCESS')
+        {
+            changelog += ""
+            changelog += "Build: " + next.number
+        }
+        addChanges(next, changelog)
+    }
+}
 
