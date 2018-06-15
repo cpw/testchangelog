@@ -26,8 +26,10 @@ pipeline {
     }
     post {
         always {
-            library 'forge-shared-library'.net.minecraftforge.groovy.Changelog.buildChangelog(currentBuild)
-            writeFile file: "changelog.txt" text: library 'forge-shared-library'.net.minecraftforge.groovy.Changelog.buildChangelog(currentBuild)
+            script {
+                def changelog = library 'forge-shared-library'.net.minecraftforge.groovy.Changelog.buildChangelog(currentBuild)
+                writeFile file: "changelog.txt", text: changelog
+            }
             archiveArtifacts artifacts: 'changelog.txt', fingerprint: false
         }
     }
