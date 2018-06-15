@@ -28,7 +28,7 @@ pipeline {
     }
     post {
         always {
-            writeChangelog(build, 'changelog.txt')
+            writeChangelog(currentBuild, 'changelog.txt')
             archiveArtifacts artifacts: 'changelog.txt', fingerprint: false
         }
     }
