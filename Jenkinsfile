@@ -1,3 +1,5 @@
+@Library('forge-shared-library')_
+
 pipeline {
     agent {
         docker {
@@ -26,10 +28,7 @@ pipeline {
     }
     post {
         always {
-            script {
-                def changelog = library 'forge-shared-library'.net.minecraftforge.groovy.Changelog.buildChangelog(currentBuild)
-                writeFile file: "changelog.txt", text: changelog
-            }
+            writeChangelog(build, 'changelog.txt')
             archiveArtifacts artifacts: 'changelog.txt', fingerprint: false
         }
     }
