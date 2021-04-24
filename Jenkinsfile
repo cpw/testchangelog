@@ -3,33 +3,18 @@
 pipeline {
     agent {
         docker {
-            image 'gradlewrapper:latest'
-            args '-v gradlecache:/gradlecache'
+            image 'gradle:jdk8'
         }
     }
     environment {
-        GRADLE_ARGS = '-Dorg.gradle.daemon.idletimeout=5000'
+        GRADLE_ARGS = '--no-daemon'
     }
 
     stages {
-        stage('fetch') {
-            steps {
-                git(url: 'https://github.com/cpw/testchangelog.git', changelog: true)
-            }
-        }
         stage('buildandtest') {
             steps {
-                sh './gradlew ${GRADLE_ARGS} --refresh-dependencies --continue build'
-                script {
-                    env.MYVERSION="2.3.4"
-                }
+                echo gradleVersion()
             }
         }        
-    }
-    post {
-        always {
-            writeChangelog(currentBuild, 'changelog.txt')
-            archiveArtifacts artifacts: 'changelog.txt', fingerprint: false
-        }
     }
 }
